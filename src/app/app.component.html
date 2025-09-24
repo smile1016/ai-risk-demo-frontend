@@ -1,1 +1,40 @@
-<app-upload-task></app-upload-task>
+<div class="app-container">
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <thy-icon thyIconName="activity" class="brand-icon"></thy-icon>
+      <span class="brand-text">项目健康度智能监控系统</span>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/overview" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="home"></thy-icon>
+        概览
+      </a>
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="monitor"></thy-icon>
+        实时仪表板
+      </a>
+      <a routerLink="/health-monitor" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="heart"></thy-icon>
+        健康监控
+      </a>
+      <a routerLink="/anomaly-detection" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="search"></thy-icon>
+        异常检测
+      </a>
+      <a routerLink="/ai-optimization" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="lightbulb"></thy-icon>
+        AI优化
+      </a>
+      <a routerLink="/upload-task" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="upload"></thy-icon>
+        任务上传
+      </a>
+    </div>
+  </nav>
+
+  <!-- 主要内容区域 -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

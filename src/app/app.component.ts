@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { UploadTaskComponent } from './components/upload-task/upload-task.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ThyIconModule } from 'ngx-tethys/icon';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, UploadTaskComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ThyIconModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'frontend';
+  title = '项目健康度智能监控系统';
 }
