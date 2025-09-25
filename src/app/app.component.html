@@ -1,1 +1,20 @@
-<app-upload-task></app-upload-task>
+<div class="app-container">
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <thy-icon thyIconName="activity" class="brand-icon"></thy-icon>
+      <span class="brand-text">项目健康度智能监控系统</span>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/iteration-monitor" routerLinkActive="active" class="nav-link">
+        <thy-icon thyIconName="activity"></thy-icon>
+        迭代监控
+      </a>
+    </div>
+  </nav>
+
+  <!-- 主要内容区域 -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

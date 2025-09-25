@@ -97,6 +97,29 @@
           }
         }
       }
+    },
+    "docs": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "docs",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@docgeni/cli:build",
+          "options": {
+            "config": "docgeni.yml"
+          }
+        },
+        "serve": {
+          "builder": "@docgeni/cli:serve",
+          "options": {
+            "config": "docgeni.yml"
+          }
+        }
+      }
     }
+  },
+  "cli": {
+    "analytics": "501a4ad8-ca43-491f-bff4-5386a72c9577"
   }
 }

@@ -1,27 +1,104 @@
-# Frontend
+# 迭代健康度智能监控系统
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+## 项目概述
 
-## Development server
+这是一个基于 Angular 和 ngx-tethys 的迭代健康度智能监控系统，实现了多维度 AI 评估项目迭代状态，提前预警风险的功能。
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 主要功能
 
-## Code scaffolding
+### 1. 多维度指标监控
+- **总任务数**: 显示当前迭代的总任务数量和完成情况
+- **完成进度**: 通过进度条展示任务完成百分比
+- **容量完成度**: 监控团队容量利用率
+- **团队效率**: 展示团队工作效率指标
+- **质量评分**: 代码质量和项目质量评分
+- **代码覆盖率**: 测试覆盖率监控
+- **技术债务**: 技术债务时间统计
+- **风险工作项数**: 高风险工作项数量统计
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 2. 数据可视化
+- **开发进度趋势图**: 展示计划进度 vs 实际进度的对比
+- **容量完成度趋势图**: 显示容量利用率的变化趋势
+- **实时数据更新**: 支持手动刷新和自动更新
 
-## Build
+### 3. 风险预警系统
+- **风险工作项监控**: 展示有风险的任务项目
+- **优先级分类**: 紧急、高、中、低优先级分类
+- **风险等级**: 高风险、中风险、低风险等级标识
+- **截止日期监控**: 超期任务预警
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 4. AI 智能分析
+- **完成概率预测**: 基于历史数据预测迭代完成概率
+- **风险因素识别**: 自动识别可能影响进度的风险因素
+- **优化建议**: 提供团队工作流程优化建议
 
-## Running unit tests
+## 技术栈
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **前端框架**: Angular 19
+- **UI 组件库**: ngx-tethys
+- **样式**: SCSS
+- **数据管理**: RxJS
+- **图表**: 自定义图表组件
 
-## Running end-to-end tests
+## 项目结构
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
+src/app/
+├── components/
+│   └── iteration-health-monitor/
+│       ├── iteration-health-monitor.component.ts
+│       ├── iteration-health-monitor.component.html
+│       └── iteration-health-monitor.component.scss
+├── models/
+│   └── iteration-health.model.ts
+├── services/
+│   └── iteration-health.service.ts
+├── app.component.ts
+├── app.component.html
+├── app.component.scss
+├── app.routes.ts
+└── app.config.ts
+```
 
-## Further help
+## 运行项目
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. 安装依赖：
+```bash
+npm install
+```
+
+2. 启动开发服务器：
+```bash
+ng serve frontend --port 4600
+```
+
+3. 访问应用：
+```
+http://localhost:4600
+```
+
+## 主要特性
+
+### 实时数据
+- 模拟实时数据更新
+- 支持手动刷新功能
+- 数据变化趋势可视化
+
+### 用户体验
+- 直观的指标卡片展示
+- 清晰的进度条和趋势图
+- 友好的风险预警界面
+- 简洁的 AI 分析报告
+
+## 创新点
+
+1. **多维度 AI 评估**: 结合历史数据和当前状态，提供智能的项目健康度评估
+2. **统一数据采集**: 整合历史迭代数据、日志、链路等多源数据
+3. **提前风险预警**: 通过异常检测算法，提前识别潜在风险
+4. **可视化监控**: 直观的图表和指标展示，便于快速了解项目状态
+
+## 未来扩展
+
+- 集成真实的 AI 分析服务
+- 添加更多图表类型和可视化方式
+- 支持多项目对比分析
