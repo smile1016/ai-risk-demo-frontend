@@ -1,0 +1,293 @@
+<div class="iteration-health-monitor">
+  <!-- 顶部导航栏 -->
+  <div class="monitor-header">
+    <div class="header-left">
+      <thy-select [(ngModel)]="selectedApp" (change)="onAppChange($any($event.target).value)" class="app-select">
+        <thy-option *ngFor="let app of appOptions" [thyValue]="app.value" [thyLabelText]="app.label"></thy-option>
+      </thy-select>
+      <thy-select [(ngModel)]="selectedInstance" (change)="onInstanceChange($any($event.target).value)" class="instance-select">
+        <thy-option *ngFor="let instance of instanceOptions" [thyValue]="instance.value" [thyLabelText]="instance.label"></thy-option>
+      </thy-select>
+    </div>
+    <div class="header-right">
+      <thy-button class="btn btn-primary" (click)="refresh()">刷新</thy-button>
+    </div>
+  </div>
+
+  <!-- 标签页导航 -->
+      <thy-tabs thyAnimated="true" [(thyActiveTab)]="activeTab">
+        <thy-tab thyTitle="迭代概览" [id]="'tab1'" >
+          <div class="tab-content">
+            <!-- 指标卡片区域 -->
+            <div class="metrics-section">
+              <div class="metrics-grid">
+                <!-- 总任务数 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>总任务数</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.totalTasks }}</div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.velocityTrend > 0" [class.trend-down]="metrics.velocityTrend < 0">
+                          {{ metrics.velocityTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.velocityTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-trend">
+                        <span class="trend-label">周同比</span>
+                        <span class="trend-value trend-up">↑ 100%</span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看任务详情</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 完成进度 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>完成进度</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.completedTasks }}/{{ metrics.totalTasks }}</div>
+                      <div class="progress-container">
+                        <div class="progress-bar">
+                          <div class="progress-fill" [style.width.%]="(metrics.completedTasks / metrics.totalTasks) * 100"></div>
+                        </div>
+                      </div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value trend-up">↑ 5.2%</span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看进度详情</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 容量完成度 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>容量完成度</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.capacityUtilization }}%</div>
+                      <div class="progress-container">
+                        <div class="progress-bar">
+                          <div class="progress-fill"
+                               [style.width.%]="metrics.capacityUtilization"
+                               [class.warning]="metrics.capacityUtilization > 80"></div>
+                        </div>
+                      </div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.capacityTrend > 0" [class.trend-down]="metrics.capacityTrend < 0">
+                          {{ metrics.capacityTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.capacityTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看容量分析</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 团队效率 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>团队效率</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.teamEfficiency }}%</div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.efficiencyTrend > 0" [class.trend-down]="metrics.efficiencyTrend < 0">
+                          {{ metrics.efficiencyTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.efficiencyTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-trend">
+                        <span class="trend-label">周同比</span>
+                        <span class="trend-value trend-up">↑ 8.5%</span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看效率分析</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 质量评分 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>质量评分</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.qualityScore }}/100</div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.qualityTrend > 0" [class.trend-down]="metrics.qualityTrend < 0">
+                          {{ metrics.qualityTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.qualityTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看质量报告</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 代码覆盖率 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>代码覆盖率</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.codeCoverage }}%</div>
+                      <div class="progress-container">
+                        <div class="progress-bar">
+                          <div class="progress-fill"
+                               [style.width.%]="metrics.codeCoverage"
+                               [class.success]="metrics.codeCoverage > 80"></div>
+                        </div>
+                      </div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.coverageTrend > 0" [class.trend-down]="metrics.coverageTrend < 0">
+                          {{ metrics.coverageTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.coverageTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看覆盖率详情</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 技术债务 -->
+                <div class="metric-card">
+                  <div class="card-header">
+                    <h3>技术债务</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value">{{ metrics.technicalDebt }} 小时</div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.debtTrend > 0" [class.trend-down]="metrics.debtTrend < 0">
+                          {{ metrics.debtTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.debtTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看债务详情</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 风险工作项数 -->
+                <div class="metric-card risk-card">
+                  <div class="card-header">
+                    <h3>风险工作项数</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="metric-content">
+                      <div class="metric-value risk-value">{{ metrics.riskCount }}</div>
+                      <div class="metric-trend">
+                        <span class="trend-label">日同比</span>
+                        <span class="trend-value" [class.trend-up]="metrics.riskTrend > 0" [class.trend-down]="metrics.riskTrend < 0">
+                          {{ metrics.riskTrend > 0 ? '↑' : '↓' }} {{ Math.abs(metrics.riskTrend) }}%
+                        </span>
+                      </div>
+                      <div class="metric-action">
+                        <a href="#" class="link-btn">查看风险详情</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 图表区域 -->
+            <div class="charts-section">
+              <div class="charts-grid">
+                <div class="chart-card">
+                  <div class="card-header">
+                    <h3>开发进度趋势</h3>
+                    <div class="chart-actions">
+                      <button class="btn-icon">
+                        <i class="icon-fullscreen"></i>
+                      </button>
+                      <button class="btn-icon" (click)="refresh()">
+                        <i class="icon-refresh"></i>
+                      </button>
+                      <button class="btn-icon">
+                        <i class="icon-bell"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-content">
+                    <div class="chart-placeholder">
+                      <div class="chart-title">开发进度趋势图</div>
+                      <div class="chart-content">
+                        <div class="chart-line">
+                          <div class="line-point" *ngFor="let point of progressChartData.datasets[0].data; let i = index"
+                               [style.left.%]="(i / (progressChartData.datasets[0].data.length - 1)) * 100"
+                               [style.bottom.%]="point">
+                          </div>
+                        </div>
+                        <div class="chart-labels">
+                          <span *ngFor="let label of progressChartData.labels" class="chart-label">{{ label }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chart-card">
+                  <div class="card-header">
+                    <h3>容量完成度趋势</h3>
+                    <div class="chart-actions">
+                      <button class="btn-icon">
+                        <i class="icon-fullscreen"></i>
+                      </button>
+                      <button class="btn-icon" (click)="refresh()">
+                        <i class="icon-refresh"></i>
+                      </button>
+                      <button class="btn-icon">
+                        <i class="icon-bell"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-content">
+                    <div class="chart-placeholder">
+                      <div class="chart-title">容量完成度趋势图</div>
+                      <div class="chart-content">
+                        <div class="chart-line">
+                          <div class="line-point" *ngFor="let point of capacityChartData.datasets[0].data; let i = index"
+                               [style.left.%]="(i / (capacityChartData.datasets[0].data.length - 1)) * 100"
+                               [style.bottom.%]="point">
+                          </div>
+                        </div>
+                        <div class="chart-labels">
+                          <span *ngFor="let label of capacityChartData.labels" class="chart-label">{{ label }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </thy-tab>
+        <thy-tab thyTitle="风险预警" [id]="'tab2'">Tab2 Content</thy-tab>
+        <thy-tab thyTitle="AI 分析" [id]="'tab3'">Tab3 Content</thy-tab>
+      </thy-tabs>
