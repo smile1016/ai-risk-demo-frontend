@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
@@ -12,6 +12,8 @@ import { RiskTableComponent } from '../risk-table/risk-table.component';
   templateUrl: './upload-task.component.html',
 })
 export class UploadTaskComponent {
+  @ViewChild('heatCanvas') heatCanvas!: ElementRef<HTMLCanvasElement>;
+
   tasks: any[] = [];
   riskResult: any[] = [];
   loading = false;
@@ -49,12 +51,29 @@ export class UploadTaskComponent {
       next: (res) => {
         this.riskResult = res;
         this.loading = false;
-        this.renderChart();
+        // this.renderChart();
+        this.renderHeatMap();
       },
       error: (err) => {
         console.error(err);
         this.error = 'AI 调用失败';
         this.loading = false;
+      },
+    });
+  }
+
+  importMock() {
+    let url = 'http://localhost:3000/import/pingcode-mock';
+
+    this.http.post<any>(url, {}).subscribe({
+      next: (res) => {
+        this.tasks = res.tasks;
+        // this.renderChart();
+        // this.renderHeatMap();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('导入失败');
       },
     });
   }
@@ -82,6 +101,41 @@ export class UploadTaskComponent {
             backgroundColor: ['#FF4C4C', '#FFC107', '#4CAF50', '#9E9E9E'],
           },
         ],
+      },
+    });
+  }
+
+  renderHeatMap() {
+    if (!this.heatCanvas) return;
+
+    const ctx = this.heatCanvas.nativeElement.getContext('2d');
+    if (!ctx) return console.error('无法获取 Canvas 2D 上下文');
+
+    if (this.chart) this.chart.destroy();
+
+    const data = this.tasks.map((t) => ({
+      x: t.probability,
+      y: t.impact,
+      r: t.risk_score * 20,
+      label: t.name,
+    }));
+
+    this.chart = new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          {
+            label: '任务风险热力图',
+            data,
+            backgroundColor: 'rgba(255,99,132,0.6)',
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: { min: 0, max: 1, title: { display: true, text: '概率' } },
+          y: { min: 0, max: 1, title: { display: true, text: '影响' } },
+        },
       },
     });
   }
