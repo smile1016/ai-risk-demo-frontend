@@ -1,14 +1,20 @@
 <table *ngIf="riskData.length > 0" border="1" cellpadding="6">
   <tr>
-    <th>任务</th>
-    <th>类型</th>
-    <th>等级</th>
-    <th>原因</th>
+    <th>编号</th>
+    <th>标题</th>
+    <th>风险类型</th>
+    <th>风险概率</th>
+    <th>风险影响程度</th>
+    <th>综合评分</th>
+    <th>风险原因</th>
   </tr>
   <tr *ngFor="let r of riskData">
-    <td>{{r.name}}</td>
-    <td>{{r.type}}</td>
-    <td>{{r.level}}</td>
-    <td>{{r.reason}}</td>
+    <td>{{ r.whole_identifier }}</td>
+    <td>{{ r.title }}</td>
+    <td>{{ r.type }}</td>
+    <td>{{ r.probability | percent }}</td>
+    <td>{{ r.impact }}</td>
+    <td>{{ r.risk_score | number : "1.2-2" }}</td>
+    <td>{{ r.reason }}</td>
   </tr>
 </table>

@@ -2,12 +2,16 @@
   <h2>项目健康监测 Demo</h2>
   <input type="file" (change)="onFileSelected($event)" accept=".xlsx,.xls" />
   <button (click)="analyzeTasks()" [disabled]="loading">分析风险</button>
+  <button (click)="importMock()">导入 Mock</button>
   <div *ngIf="loading">分析中…</div>
   <div *ngIf="error" style="color: red">{{ error }}</div>
 
   <div *ngIf="riskResult && riskResult.length">
     <h3>风险分析结果</h3>
     <app-risk-table [riskData]="riskResult"></app-risk-table>
-    <canvas id="riskChart" width="400" height="200"></canvas>
+    <canvas #riskChart width="400" height="200"></canvas>
+
+    <h3>风险热力图</h3>
+    <canvas #heatCanvas width="400" height="300"></canvas>
   </div>
 </div>
